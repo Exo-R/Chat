@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.focus'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':general:common')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.5'
+    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+}
+
+jar {
+    jar.archiveName("Server.jar")
+
+    duplicatesStrategy = 'exclude'
+
+    manifest {
+        attributes(
+                'Main-Class': 'ru.focus.ServerMain',
+                'Class-Path': 'config/'
+        )
+    }
+
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+
+    from('src/main/resources') {
+        into 'resources'
+    }
+}

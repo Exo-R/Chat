@@ -1,0 +1,4 @@
+rootProject.name = 'Chat'
+include ':general:client'
+include ':general:common'
+include ':general:server'
